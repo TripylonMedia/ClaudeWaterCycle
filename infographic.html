@@ -6,118 +6,117 @@
 <title>The Water Cycle</title>
 <style>
   :root {
-    --bg: #f3f8fc;
-    --ink: #13293d;
-    --muted: #4c6478;
+    --bg: #eef6fb;
+    --ink: #10263a;
+    --muted: #4a6276;
     --card: #ffffff;
-    --line: #d7e4ee;
-    --ocean: #1f78b4;
-    --sky: #cfe8f7;
-    --sun: #f6b73c;
-    --c1: #f08a24; /* evaporation */
-    --c2: #7a5cc4; /* condensation */
-    --c3: #1f78b4; /* precipitation */
-    --c4: #2e9e6b; /* runoff */
-    --c5: #0f5a8a; /* collection */
+    --line: #d5e3ee;
+    --sky-top: #bfe3f8;
+    --sky-bot: #e9f6fd;
+    --land: #7cc47f;
+    --land-dark: #4f9e5b;
+    --ocean: #2384c6;
+    --ocean-deep: #135f94;
+    --cloud: #ffffff;
+    --sun: #f7b733;
+    --c1: #f08a24;
+    --c2: #2fa36b;
+    --c3: #7a5cc4;
+    --c4: #1f78b4;
+    --c5: #0e9aa7;
+    --c6: #0f4f80;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1822; --ink: #e6f0f7; --muted: #9db3c4; --card: #15232f; --line: #24384a;
+      --sky-top: #1b3a55; --sky-bot: #2a5374; --land: #3f7d4a; --land-dark: #2d5e37;
+      --ocean: #1c6aa3; --ocean-deep: #0f456d; --cloud: #dfe9f1;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1822; --ink: #e6f0f7; --muted: #9db3c4; --card: #15232f; --line: #24384a;
+    --sky-top: #1b3a55; --sky-bot: #2a5374; --land: #3f7d4a; --land-dark: #2d5e37;
+    --ocean: #1c6aa3; --ocean-deep: #0f456d; --cloud: #dfe9f1;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
     background: var(--bg);
     color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.55;
   }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 48px; }
-
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 40px 16px 56px; }
   header { text-align: center; margin-bottom: 28px; }
   .eyebrow {
-    display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .08em;
-    text-transform: uppercase; color: var(--ocean); background: #e2f0fa;
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--c4); background: color-mix(in srgb, var(--c4) 12%, transparent);
     padding: 4px 12px; border-radius: 999px; margin-bottom: 12px;
   }
-  h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.15; margin: 0 0 12px; letter-spacing: -.01em; }
-  .lede { max-width: 640px; margin: 0 auto; color: var(--muted); font-size: 17px; }
+  h1 { font-size: clamp(28px, 5vw, 46px); line-height: 1.1; margin: 0 0 12px; letter-spacing: -.02em; text-wrap: balance; }
+  .lede { max-width: 640px; margin: 0 auto; color: var(--muted); font-size: 18px; text-wrap: pretty; }
 
-  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 28px; }
-  .fact {
-    background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px;
-    display: flex; gap: 12px; align-items: flex-start;
-  }
-  .fact .ico { font-size: 22px; line-height: 1; flex: none; width: 36px; height: 36px; border-radius: 10px;
-    display: grid; place-items: center; background: #e2f0fa; }
-  .fact b { display: block; font-size: 15px; margin-bottom: 2px; }
-  .fact span { font-size: 14px; color: var(--muted); }
-
-  .stage-panel {
-    background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
-    display: grid; grid-template-columns: 1.35fr 1fr;
-  }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 10px 30px rgba(16,38,58,.06); }
+  .stage-panel { display: grid; grid-template-columns: 1.35fr 1fr; overflow: hidden; }
   @media (max-width: 760px) { .stage-panel { grid-template-columns: 1fr; } }
-
-  .scene { background: linear-gradient(#bfe3f8, #e9f6fd 62%); position: relative; }
-  .scene svg { display: block; width: 100%; height: auto; }
-
-  .info { padding: 24px 24px 20px; display: flex; flex-direction: column; }
-  .step-label { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-  .info h2 { margin: 4px 0 8px; font-size: 28px; transition: color .4s; }
-  .info p { margin: 0; color: var(--ink); font-size: 16px; min-height: 5.5em; }
-  .fade { animation: fadeIn .5s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
-  .dots { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-  .dot {
-    border: 1px solid var(--line); background: #f6fafd; color: var(--ink); border-radius: 999px;
-    padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;
-    transition: background .3s, border-color .3s, color .3s;
+  svg.scene { display: block; width: 100%; height: auto; }
+  .info { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .step-num { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+  .step-title { font-size: 30px; margin: 0; line-height: 1.15; color: var(--accent, var(--c1)); transition: color .4s; }
+  .step-text { margin: 0; font-size: 17px; min-height: 5.5em; }
+  .fade { animation: fadeUp .5s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
+  .progress > i { display: block; height: 100%; width: 0; background: var(--accent, var(--c1)); border-radius: 99px; }
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button {
+    font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 7px 14px;
   }
-  .dot i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); display: inline-block; }
-  .dot.active { background: var(--c); border-color: var(--c); color: #fff; }
-  .dot.active i { background: #fff; }
+  button:hover { border-color: var(--accent, var(--c1)); }
+  button:focus-visible { outline: 3px solid color-mix(in srgb, var(--c4) 50%, transparent); outline-offset: 2px; }
 
-  .controls { margin-top: auto; padding-top: 18px; display: flex; align-items: center; gap: 12px; }
-  .btn { border: 0; background: var(--ink); color: #fff; font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 10px; cursor: pointer; }
-  .progress { flex: 1; height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; }
-  .progress > div { height: 100%; width: 0; background: var(--active, var(--c1)); border-radius: inherit; }
-
-  .stat {
-    margin-top: 28px; border-radius: 18px; padding: 24px; color: #fff;
-    background: linear-gradient(120deg, #0f5a8a, #1f78b4 55%, #3aa0d8);
-    display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+  .steps { list-style: none; padding: 0; margin: 22px 0 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  @media (max-width: 760px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  .steps button {
+    width: 100%; border-radius: 14px; text-align: left; padding: 12px; display: flex; flex-direction: column; gap: 4px;
+    border: 2px solid var(--line); transition: transform .2s, border-color .2s, background .2s;
   }
-  .stat .big { font-size: clamp(44px, 9vw, 72px); font-weight: 800; line-height: 1; }
-  .stat .bar { flex: 1; min-width: 220px; }
-  .stat .bar p { margin: 0 0 10px; font-size: 17px; }
-  .meter { height: 14px; background: rgba(255,255,255,.25); border-radius: 999px; overflow: hidden; display: flex; }
-  .meter .salt { width: 97%; background: #fff; }
-  .meter .fresh { width: 3%; background: #9ee6b8; }
-  .legend { display: flex; gap: 16px; font-size: 13px; margin-top: 8px; opacity: .92; }
-  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .steps button .n { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .steps button .t { font-size: 15px; }
+  .steps button .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+  .steps button.active { border-color: var(--c); background: color-mix(in srgb, var(--c) 12%, var(--card)); transform: translateY(-3px); }
 
-  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 24px; }
+  .fact {
+    margin-top: 24px; display: flex; gap: 18px; align-items: center; padding: 22px 26px;
+    background: linear-gradient(120deg, color-mix(in srgb, var(--c4) 16%, var(--card)), color-mix(in srgb, var(--c5) 14%, var(--card)));
+  }
+  .fact .big { font-size: 42px; font-weight: 800; color: var(--c4); line-height: 1; white-space: nowrap; }
+  .fact .big small { font-size: 18px; font-weight: 700; }
+  .fact p { margin: 0; font-size: 17px; }
+  .fact strong { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  @media (max-width: 520px) { .fact { flex-direction: column; align-items: flex-start; } }
+  footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 28px; }
 
-  /* ---------- scene animation ---------- */
-  .layer { opacity: .18; transition: opacity .6s ease; }
+  /* Scene animation */
+  .layer { opacity: .12; transition: opacity .6s ease; }
   .layer.on { opacity: 1; }
-  .vapor path { stroke-dasharray: 6 8; animation: rise 1.6s linear infinite; }
-  @keyframes rise { to { stroke-dashoffset: -28; } }
   .sun-rays { transform-origin: 90px 70px; animation: spin 18s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .cloud { animation: drift 7s ease-in-out infinite alternate; }
-  @keyframes drift { from { transform: translateX(-8px); } to { transform: translateX(10px); } }
-  .rain line { animation: fall 1s linear infinite; }
-  .rain line:nth-child(2n) { animation-delay: -.35s; }
-  .rain line:nth-child(3n) { animation-delay: -.7s; }
-  @keyframes fall { from { transform: translateY(-14px); opacity: 0; } 30% { opacity: 1; } to { transform: translateY(26px); opacity: 0; } }
-  .flow path { stroke-dasharray: 10 10; animation: flow 1.2s linear infinite; }
-  @keyframes flow { to { stroke-dashoffset: -40; } }
-  .waves path { animation: wave 3s ease-in-out infinite alternate; }
-  @keyframes wave { to { transform: translateX(-14px); } }
-  .soak circle { animation: soak 1.8s ease-in infinite; }
-  .soak circle:nth-child(2) { animation-delay: -.6s; }
-  .soak circle:nth-child(3) { animation-delay: -1.2s; }
-  @keyframes soak { from { transform: translateY(0); opacity: 1; } to { transform: translateY(22px); opacity: 0; } }
-
+  .wave { animation: wave 4s ease-in-out infinite; }
+  @keyframes wave { 50% { transform: translateX(-14px); } }
+  .rise { animation: rise 2.4s ease-in infinite; }
+  @keyframes rise { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: .9; } 100% { transform: translateY(-120px); opacity: 0; } }
+  .fall { animation: fall 1.3s linear infinite; }
+  @keyframes fall { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(120px); opacity: 0; } }
+  .flow { stroke-dasharray: 10 12; animation: dash 1.2s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -44; } }
+  .soak { animation: soak 2.2s ease-in infinite; }
+  @keyframes soak { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(40px); opacity: 0; } }
+  .puff { animation: puff 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes puff { 50% { transform: scale(1.06); } }
+  .glow { animation: glow 2.4s ease-in-out infinite; }
+  @keyframes glow { 50% { opacity: .45; } }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
@@ -125,198 +124,210 @@
 </head>
 <body>
 <div class="wrap">
-
   <header>
-    <div class="eyebrow">The Water Cycle</div>
+    <span class="eyebrow">The Water Cycle</span>
     <h1>The Never-Ending Journey of Water</h1>
-    <p class="lede">The water you drink today may once have been part of a cloud, a glacier, or even the ocean. Earth's water is always on the move, and the sun keeps it all going.</p>
+    <p class="lede">The water in your glass may once have floated in a cloud or sat in an ocean. Earth's water is always on the move, and the sun keeps it going.</p>
   </header>
 
-  <section class="facts" aria-label="Key points">
-    <div class="fact"><div class="ico">&#128260;</div><div><b>Always moving</b><span>Water never stops traveling between sea, sky, and land.</span></div></div>
-    <div class="fact"><div class="ico">&#10052;&#65039;</div><div><b>Three forms</b><span>It switches between liquid water, solid ice, and invisible vapor.</span></div></div>
-    <div class="fact"><div class="ico">&#9728;&#65039;</div><div><b>Sun-powered</b><span>The sun's heat drives every step of the trip.</span></div></div>
-    <div class="fact"><div class="ico">&#127754;</div><div><b>Mostly ocean</b><span>Nearly 97% of Earth's water is in the salty oceans.</span></div></div>
-  </section>
+  <section class="card stage-panel" aria-label="Animated water cycle">
+    <svg class="scene" viewBox="0 0 600 420" role="img" aria-labelledby="sceneTitle">
+      <title id="sceneTitle">Diagram of the water cycle: sun, ocean, clouds, rain, mountains, and groundwater</title>
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--sky-top)"/><stop offset="1" stop-color="var(--sky-bot)"/>
+        </linearGradient>
+        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--ocean)"/><stop offset="1" stop-color="var(--ocean-deep)"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="420" fill="url(#sky)"/>
 
-  <section class="stage-panel" aria-label="Stages of the water cycle">
-    <div class="scene">
-      <svg viewBox="0 0 600 400" role="img" aria-label="Animated diagram of the water cycle">
-        <!-- sun -->
-        <g class="sun-rays" stroke="#f6b73c" stroke-width="4" stroke-linecap="round">
-          <line x1="90" y1="20" x2="90" y2="34"/><line x1="90" y1="106" x2="90" y2="120"/>
-          <line x1="40" y1="70" x2="54" y2="70"/><line x1="126" y1="70" x2="140" y2="70"/>
-          <line x1="55" y1="35" x2="65" y2="45"/><line x1="115" y1="95" x2="125" y2="105"/>
-          <line x1="125" y1="35" x2="115" y2="45"/><line x1="65" y1="95" x2="55" y2="105"/>
+      <!-- Sun -->
+      <g>
+        <g class="sun-rays" stroke="var(--sun)" stroke-width="4" stroke-linecap="round">
+          <line x1="90" y1="20" x2="90" y2="32"/><line x1="90" y1="108" x2="90" y2="120"/>
+          <line x1="40" y1="70" x2="52" y2="70"/><line x1="128" y1="70" x2="140" y2="70"/>
+          <line x1="55" y1="35" x2="63" y2="43"/><line x1="117" y1="97" x2="125" y2="105"/>
+          <line x1="55" y1="105" x2="63" y2="97"/><line x1="117" y1="43" x2="125" y2="35"/>
         </g>
-        <circle cx="90" cy="70" r="28" fill="#f6b73c"/>
+        <circle cx="90" cy="70" r="28" fill="var(--sun)"/>
+      </g>
 
-        <!-- mountain + land -->
-        <path d="M300 300 L430 150 L470 190 L520 130 L600 230 L600 330 L300 330 Z" fill="#7cb98b"/>
-        <path d="M430 150 L452 175 L440 172 L428 182 L418 166 Z M520 130 L545 162 L530 158 L518 168 L506 150 Z" fill="#fff"/>
-        <rect x="0" y="300" width="600" height="100" fill="#8a6a4a"/>
-        <rect x="300" y="290" width="300" height="22" fill="#5fa36f"/>
-        <!-- tree -->
-        <rect x="350" y="250" width="8" height="42" fill="#6b4a2e"/>
-        <circle cx="354" cy="244" r="20" fill="#2e8a55"/>
+      <!-- Land and mountains -->
+      <path d="M300 300 L380 170 L430 230 L480 150 L600 280 L600 420 L300 420 Z" fill="var(--land-dark)"/>
+      <path d="M380 170 L398 199 L386 196 L372 205 L366 193 Z M480 150 L503 180 L488 176 L474 186 L466 166 Z" fill="#ffffff" opacity=".9"/>
+      <path d="M250 300 C330 280 420 285 600 270 L600 420 L250 420 Z" fill="var(--land)"/>
+      <!-- Ground layer -->
+      <rect x="250" y="360" width="350" height="60" fill="#8a6a4a" opacity=".35"/>
 
-        <!-- ocean -->
-        <path d="M0 290 H310 Q300 330 280 400 H0 Z" fill="#1f78b4"/>
-        <g class="waves" fill="none" stroke="#9fd3f2" stroke-width="3" stroke-linecap="round">
-          <path d="M20 300 q12 -8 24 0 t24 0 t24 0 t24 0 t24 0 t24 0 t24 0 t24 0 t24 0 t24 0"/>
+      <!-- Ocean -->
+      <path d="M0 290 C80 282 180 282 290 300 L290 420 L0 420 Z" fill="url(#sea)"/>
+      <g class="wave" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round">
+        <path d="M20 310 q15 -8 30 0 t30 0"/><path d="M130 330 q15 -8 30 0 t30 0"/><path d="M60 360 q15 -8 30 0 t30 0"/>
+      </g>
+
+      <!-- Tree -->
+      <g>
+        <rect x="335" y="262" width="8" height="34" fill="#6b4b2e"/>
+        <circle cx="339" cy="250" r="22" fill="#2e8b45"/>
+        <circle cx="325" cy="262" r="14" fill="#2e8b45"/><circle cx="354" cy="262" r="14" fill="#2e8b45"/>
+      </g>
+
+      <!-- Clouds -->
+      <g id="clouds">
+        <g class="puff"><ellipse cx="250" cy="80" rx="58" ry="26" fill="var(--cloud)"/><circle cx="225" cy="66" r="24" fill="var(--cloud)"/><circle cx="265" cy="58" r="30" fill="var(--cloud)"/></g>
+        <g class="puff" style="animation-delay:-1.5s"><ellipse cx="420" cy="70" rx="62" ry="26" fill="var(--cloud)"/><circle cx="400" cy="56" r="26" fill="var(--cloud)"/><circle cx="440" cy="50" r="30" fill="var(--cloud)"/></g>
+      </g>
+
+      <!-- Stage 1: Evaporation -->
+      <g class="layer" data-stage="0" fill="var(--c1)">
+        <g class="glow" stroke="var(--c1)" stroke-width="3" fill="none" stroke-dasharray="4 6"><path d="M110 98 L170 270"/></g>
+        <circle class="rise" cx="120" cy="280" r="5"/>
+        <circle class="rise" cx="160" cy="285" r="4" style="animation-delay:-.6s"/>
+        <circle class="rise" cx="200" cy="282" r="5" style="animation-delay:-1.2s"/>
+        <circle class="rise" cx="240" cy="290" r="4" style="animation-delay:-1.8s"/>
+        <text x="150" y="250" font-size="15" font-weight="700" fill="var(--c1)" text-anchor="middle">vapor rises</text>
+      </g>
+
+      <!-- Stage 2: Transpiration -->
+      <g class="layer" data-stage="1" fill="var(--c2)">
+        <circle class="rise" cx="325" cy="238" r="4"/>
+        <circle class="rise" cx="340" cy="230" r="4" style="animation-delay:-.8s"/>
+        <circle class="rise" cx="355" cy="240" r="4" style="animation-delay:-1.6s"/>
+        <text x="340" y="215" font-size="15" font-weight="700" fill="var(--c2)" text-anchor="middle" dy="-60">from leaves</text>
+      </g>
+
+      <!-- Stage 3: Condensation -->
+      <g class="layer" data-stage="2">
+        <ellipse class="glow" cx="250" cy="72" rx="80" ry="44" fill="none" stroke="var(--c3)" stroke-width="3" stroke-dasharray="6 6"/>
+        <ellipse class="glow" cx="420" cy="64" rx="84" ry="44" fill="none" stroke="var(--c3)" stroke-width="3" stroke-dasharray="6 6" style="animation-delay:-1.2s"/>
+        <text x="335" y="138" font-size="15" font-weight="700" fill="var(--c3)" text-anchor="middle">droplets form clouds</text>
+      </g>
+
+      <!-- Stage 4: Precipitation -->
+      <g class="layer" data-stage="3" stroke="var(--c4)" stroke-width="3" stroke-linecap="round">
+        <line class="fall" x1="390" y1="100" x2="386" y2="112"/>
+        <line class="fall" x1="410" y1="100" x2="406" y2="112" style="animation-delay:-.3s"/>
+        <line class="fall" x1="430" y1="100" x2="426" y2="112" style="animation-delay:-.7s"/>
+        <line class="fall" x1="450" y1="100" x2="446" y2="112" style="animation-delay:-1s"/>
+        <line class="fall" x1="470" y1="100" x2="466" y2="112" style="animation-delay:-.5s"/>
+        <g fill="var(--c4)" stroke="none"><circle class="fall" cx="230" cy="108" r="3" style="animation-delay:-.2s"/><circle class="fall" cx="255" cy="110" r="3" style="animation-delay:-.9s"/></g>
+      </g>
+
+      <!-- Stage 5: Runoff and infiltration -->
+      <g class="layer" data-stage="4">
+        <path class="flow" d="M470 190 C440 240 420 270 360 292 C320 305 300 300 285 302" fill="none" stroke="var(--c5)" stroke-width="5" stroke-linecap="round"/>
+        <g fill="var(--c5)">
+          <circle class="soak" cx="440" cy="320" r="4"/>
+          <circle class="soak" cx="480" cy="316" r="4" style="animation-delay:-.7s"/>
+          <circle class="soak" cx="520" cy="312" r="4" style="animation-delay:-1.4s"/>
         </g>
-        <!-- groundwater -->
-        <path d="M290 360 Q420 350 600 365 V378 Q420 368 285 378 Z" fill="#4aa3d6" opacity=".55"/>
+        <text x="500" y="350" font-size="14" font-weight="700" fill="var(--c5)" text-anchor="middle">soaks in</text>
+      </g>
 
-        <!-- 1 evaporation -->
-        <g class="layer vapor" data-stage="0" fill="none" stroke="#f08a24" stroke-width="3" stroke-linecap="round">
-          <path d="M120 285 C110 250 135 220 120 180"/>
-          <path d="M180 285 C170 250 195 220 180 180"/>
-          <path d="M240 285 C230 250 255 220 240 180"/>
-          <path d="M354 222 C346 200 362 185 354 165"/>
-        </g>
+      <!-- Stage 6: Collection -->
+      <g class="layer" data-stage="5">
+        <path class="glow" d="M0 290 C80 282 180 282 290 300 L290 420 L0 420 Z" fill="none" stroke="var(--c6)" stroke-width="5"/>
+        <rect class="glow" x="252" y="362" width="346" height="56" fill="none" stroke="var(--c6)" stroke-width="4" stroke-dasharray="8 6" rx="6"/>
+        <text x="140" y="400" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">ocean</text>
+        <text x="425" y="396" font-size="14" font-weight="700" fill="var(--c6)" text-anchor="middle">groundwater</text>
+      </g>
+    </svg>
 
-        <!-- 2 condensation (cloud) -->
-        <g class="layer" data-stage="1">
-          <g class="cloud" fill="#ffffff" stroke="#7a5cc4" stroke-width="2.5">
-            <path d="M200 120 a28 28 0 0 1 40 -30 a36 36 0 0 1 66 6 a26 26 0 0 1 30 40 H210 a20 20 0 0 1 -10 -16 Z"/>
-          </g>
-          <g fill="#7a5cc4">
-            <circle cx="240" cy="118" r="3"/><circle cx="262" cy="112" r="3"/><circle cx="284" cy="120" r="3"/><circle cx="306" cy="114" r="3"/>
-          </g>
-        </g>
-
-        <!-- 3 precipitation -->
-        <g class="layer" data-stage="2">
-          <g class="cloud" fill="#9aa9bd">
-            <path d="M400 95 a24 24 0 0 1 36 -24 a30 30 0 0 1 56 6 a22 22 0 0 1 24 34 H410 a18 18 0 0 1 -10 -16 Z"/>
-          </g>
-          <g class="rain" stroke="#1f78b4" stroke-width="3" stroke-linecap="round">
-            <line x1="425" y1="130" x2="421" y2="142"/><line x1="445" y1="134" x2="441" y2="146"/>
-            <line x1="465" y1="128" x2="461" y2="140"/><line x1="485" y1="136" x2="481" y2="148"/>
-            <line x1="505" y1="130" x2="501" y2="142"/><line x1="435" y1="150" x2="431" y2="162"/>
-            <line x1="475" y1="152" x2="471" y2="164"/><line x1="495" y1="156" x2="491" y2="168"/>
-          </g>
-        </g>
-
-        <!-- 4 runoff + infiltration -->
-        <g class="layer" data-stage="3">
-          <g class="flow" fill="none" stroke="#2e9e6b" stroke-width="4" stroke-linecap="round">
-            <path d="M470 200 C440 240 400 270 330 292"/>
-            <path d="M560 240 C520 270 470 285 420 292"/>
-          </g>
-          <g class="soak" fill="#2e9e6b">
-            <circle cx="450" cy="320" r="4"/><circle cx="500" cy="322" r="4"/><circle cx="550" cy="318" r="4"/>
-          </g>
-        </g>
-
-        <!-- 5 collection -->
-        <g class="layer" data-stage="4" fill="none" stroke="#0f5a8a" stroke-width="3" stroke-dasharray="4 5">
-          <path d="M8 292 H300 Q292 330 274 392 H8 Z"/>
-          <path d="M290 356 Q420 346 596 361 V382 Q420 372 285 382 Z"/>
-          <path d="M412 168 L432 150 L452 175 Z M500 152 L520 130 L545 162 Z"/>
-        </g>
-
-        <!-- labels -->
-        <g font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="600" fill="#13293d">
-          <text x="150" y="388" fill="#ffffff">Ocean</text>
-          <text x="470" y="395" fill="#ffffff">Groundwater</text>
-        </g>
-      </svg>
-    </div>
-
-    <div class="info">
-      <div class="step-label" id="stepLabel">Stage 1 of 5</div>
-      <h2 id="stageTitle">Evaporation</h2>
-      <p id="stageText"></p>
-      <div class="dots" id="dots"></div>
+    <div class="info" id="info">
+      <div class="step-num" id="stepNum">Step 1 of 6</div>
+      <h2 class="step-title" id="stepTitle">Evaporation</h2>
+      <p class="step-text" id="stepText"></p>
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
       <div class="controls">
-        <button class="btn" id="toggle" type="button">Pause</button>
-        <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+        <button id="prev" aria-label="Previous stage">Prev</button>
+        <button id="play" aria-label="Pause animation">Pause</button>
+        <button id="next" aria-label="Next stage">Next</button>
       </div>
     </div>
   </section>
 
-  <section class="stat">
-    <div class="big">97%</div>
-    <div class="bar">
-      <p>of Earth's water sits in the salty oceans.</p>
-      <div class="meter"><div class="salt"></div><div class="fresh"></div></div>
-      <div class="legend"><span><i style="background:#fff"></i>Salty oceans</span><span><i style="background:#9ee6b8"></i>Everything else</span></div>
-    </div>
-  </section>
+  <ol class="steps" id="steps"></ol>
 
-  <footer>Then it all starts again, a journey with no finish line.</footer>
+  <aside class="card fact">
+    <div class="big">8&ndash;10 <small>days</small></div>
+    <p><strong>Fun fact</strong>Water vapor usually stays in the sky for only about 8 to 10 days before falling back down!</p>
+  </aside>
+
+  <footer>Sun-powered, endlessly repeating: the same water has been making this trip for billions of years.</footer>
 </div>
 
 <script>
 (function () {
   var stages = [
-    { name: "Evaporation", color: "var(--c1)",
-      text: "The sun warms oceans, lakes, and rivers, and some of the water floats up into the air as vapor. Plants add more by breathing out water through their leaves." },
-    { name: "Condensation", color: "var(--c2)",
-      text: "Higher up, the air is cooler, so the vapor turns into tiny droplets that bunch together into clouds." },
-    { name: "Precipitation", color: "var(--c3)",
-      text: "When the droplets get heavy, they fall back to Earth as rain, snow, sleet, or hail." },
-    { name: "Runoff & Infiltration", color: "var(--c4)",
-      text: "The water runs over the land into streams and lakes, or soaks into the ground." },
-    { name: "Collection", color: "var(--c5)",
-      text: "Finally, it collects in oceans, lakes, ice, and underground, ready to start the trip again." }
+    { t: "Evaporation", c: "--c1", d: "The sun warms oceans, lakes, and rivers, and some water rises into the air as invisible vapor." },
+    { t: "Transpiration", c: "--c2", d: "Plants add more water vapor to the air by letting water out through their leaves." },
+    { t: "Condensation", c: "--c3", d: "High in the sky the air is cooler, so the vapor turns into tiny droplets that gather into clouds." },
+    { t: "Precipitation", c: "--c4", d: "When the droplets get heavy, they fall as rain, snow, sleet, or hail." },
+    { t: "Runoff & Infiltration", c: "--c5", d: "Water flows over the land into streams and lakes, or soaks down into the ground." },
+    { t: "Collection", c: "--c6", d: "Water collects in oceans, lakes, ice, and underground, ready to start the trip again." }
   ];
-
-  var DURATION = 5000;
+  var DURATION = 4500;
+  var i = 0, playing = true, start = 0, raf = null;
+  var root = document.documentElement;
   var layers = document.querySelectorAll(".layer");
-  var title = document.getElementById("stageTitle");
-  var text = document.getElementById("stageText");
-  var label = document.getElementById("stepLabel");
-  var dotsEl = document.getElementById("dots");
+  var stepsEl = document.getElementById("steps");
+  var titleEl = document.getElementById("stepTitle");
+  var textEl = document.getElementById("stepText");
+  var numEl = document.getElementById("stepNum");
   var bar = document.getElementById("bar");
-  var toggle = document.getElementById("toggle");
-  var current = 0, playing = true, start = performance.now(), elapsed = 0;
+  var playBtn = document.getElementById("play");
+  var info = document.getElementById("info");
 
-  stages.forEach(function (s, i) {
+  stages.forEach(function (s, k) {
+    var li = document.createElement("li");
     var b = document.createElement("button");
-    b.type = "button";
-    b.className = "dot";
-    b.style.setProperty("--c", s.color);
-    b.innerHTML = "<i></i>" + (i + 1) + ". " + s.name;
-    b.addEventListener("click", function () { show(i); });
-    dotsEl.appendChild(b);
+    b.style.setProperty("--c", "var(" + s.c + ")");
+    b.innerHTML = '<span class="dot"></span><span class="n">Step ' + (k + 1) + '</span><span class="t">' + s.t + '</span>';
+    b.addEventListener("click", function () { go(k, true); });
+    li.appendChild(b);
+    stepsEl.appendChild(li);
   });
-  var dots = dotsEl.querySelectorAll(".dot");
+  var btns = stepsEl.querySelectorAll("button");
 
-  function show(i) {
-    current = i;
+  function go(k, user) {
+    i = (k + stages.length) % stages.length;
     var s = stages[i];
-    label.textContent = "Stage " + (i + 1) + " of " + stages.length;
-    title.textContent = s.name;
-    title.style.color = s.color;
-    text.textContent = s.text;
-    [title, text].forEach(function (el) { el.classList.remove("fade"); void el.offsetWidth; el.classList.add("fade"); });
-    for (var k = 0; k < layers.length; k++) layers[k].classList.toggle("on", +layers[k].dataset.stage === i);
-    for (var d = 0; d < dots.length; d++) dots[d].classList.toggle("active", d === i);
-    bar.style.background = s.color;
-    elapsed = 0;
+    info.style.setProperty("--accent", "var(" + s.c + ")");
+    numEl.textContent = "Step " + (i + 1) + " of " + stages.length;
+    titleEl.textContent = s.t;
+    textEl.textContent = s.d;
+    [titleEl, textEl].forEach(function (el) { el.classList.remove("fade"); void el.offsetWidth; el.classList.add("fade"); });
+    layers.forEach(function (l) { l.classList.toggle("on", +l.getAttribute("data-stage") === i); });
+    btns.forEach(function (b, n) { b.classList.toggle("active", n === i); b.setAttribute("aria-current", n === i ? "step" : "false"); });
     start = performance.now();
+    if (user && !playing) bar.style.width = "0";
   }
 
   function tick(now) {
     if (playing) {
-      elapsed = now - start;
-      if (elapsed >= DURATION) { show((current + 1) % stages.length); elapsed = 0; }
+      var p = (now - start) / DURATION;
+      if (p >= 1) { go(i + 1); p = 0; }
+      bar.style.width = (p * 100) + "%";
     }
-    bar.style.width = Math.min(100, (elapsed / DURATION) * 100) + "%";
-    requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
   }
 
-  toggle.addEventListener("click", function () {
+  playBtn.addEventListener("click", function () {
     playing = !playing;
-    toggle.textContent = playing ? "Pause" : "Play";
-    if (playing) start = performance.now() - elapsed;
+    playBtn.textContent = playing ? "Pause" : "Play";
+    playBtn.setAttribute("aria-label", playing ? "Pause animation" : "Play animation");
+    if (playing) start = performance.now() - (parseFloat(bar.style.width) || 0) / 100 * DURATION;
   });
+  document.getElementById("next").addEventListener("click", function () { go(i + 1, true); });
+  document.getElementById("prev").addEventListener("click", function () { go(i - 1, true); });
 
-  show(0);
-  requestAnimationFrame(tick);
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    playing = false; playBtn.textContent = "Play";
+  }
+  go(0);
+  raf = requestAnimationFrame(tick);
 })();
 </script>
 </body>
